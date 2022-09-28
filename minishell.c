@@ -27,52 +27,67 @@ int main(int ac, char **av, char **env)
     while(1)
     {
         str = readline("minishell >$ ");
-        lexer = init_lexer(str, lexer);
-        while ((tmp = get_next_token(lexer)) != NULL)
-            add_back(&token, tmp);
-        if ((token) != NULL)
+        if (str[0] != '\0')
         {
-            parse = init_parsing(&token, lexer);
-        }
-        t_parse *tmp1 = parse;
-        if (lexer->flg_error == 0)
-        {
-            while(tmp1)
+            lexer = init_lexer(str, lexer);
+            while ((tmp = get_next_token(lexer)) != NULL)
+                add_back(&token, tmp);
+            if ((token) != NULL)
             {
-                if (tmp1->cmd != NULL)
-                    printf("cmd = %s\n", tmp1->cmd);
-                if (tmp1->arg != NULL)
-                {
-                    int i = 0;
-                    while(tmp1->arg[i])
-                    {
-                        printf("arg = %s\n", tmp1->arg[i]);
-                        i++;
-                    }
-                }
-                if (tmp1->rdr != NULL)
-                {
-                    t_rdr *r = tmp1->rdr;
-                    while(r)
-                    {
-                        printf("rdr->type = %d, rdr->value = %s\n", r->type, r->value);
-                        r = r->next;
-                    }
-                }
-                printf("-----------------------\n");
-                tmp1 = tmp1->next;
+                parse = init_parsing(&token, lexer);
             }
-        }
-        else
-            printf("syntax_error\n");
-        if (ft_strlen(str) > 0)
-            add_history(str);
-        tmp = token;
-        while(tmp)
-        {
-            token = token->next;
-            free(tmp);
+            t_parse *tmp1 = parse;
+            if (lexer->flg_error == 0 && parse != NULL)
+            {
+                while(tmp1)
+                {
+                    if (tmp1->cmd != NULL)
+                    {
+                        printf("cmd = |%s|\n", tmp1->cmd);
+                        free(tmp1->cmd);
+                    }
+                    if (tmp1->arg != NULL)
+                    {
+                        int i = 0;
+                        while(tmp1->arg[i])
+                        {
+                            printf("arg = %s\n", tmp1->arg[i]);
+                            i++;
+                        }
+                    }
+                    if (tmp1->rdr != NULL)
+                    {
+                        t_rdr *r = tmp1->rdr;
+                        while(r)
+                        {
+                            printf("rdr->type = %d, rdr->value = %s\n", r->type, r->value);
+                            r = r->next;
+                        }
+                    }
+                    printf("-----------------------\n");
+                    tmp1 = tmp1->next;
+                }
+            }
+            else if (lexer->flg_error == 1 && parse != NULL)
+                printf("syntax_error\n");
+            if (ft_strlen(str) > 0)
+                add_history(str);
             tmp = token;
+            while(tmp)
+            {
+                token = token->next;
+                free(tmp);
+                tmp = token;
+            }
+            // tmp1 = parse;
+            // while(tmp1)
+            // {
+            //     if (tmp1->cmd != NULL && tmp1->cmd[0] != '\0')
+            //     {
+            //         free(tmp1->cmd);
+            //     }
+            //     tmp1 = tmp1->next;
+            // }
         }
     }
 return 0;

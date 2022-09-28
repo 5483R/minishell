@@ -73,7 +73,7 @@ t_token	*get_next_token(t_lexer *lexer)
 		else
 			return lexer_advance_with_token(lexer, init_token(TOKEN_ARG, collect_string(lexer)));
 	}
-	return (void*)0;
+	return NULL;
 }
 
 char *join_to_str(t_lexer *lexer)

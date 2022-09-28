@@ -2,6 +2,7 @@
 #define HEADER_H
 
 # include <unistd.h>
+# include "token.h"
 # include <stdlib.h>
 # include <readline/readline.h>
 # include <readline/history.h>
@@ -32,25 +33,6 @@ typedef struct s_parse
     int     i;
     struct s_parse *next;
 } t_parse;
-
-typedef struct s_token
-{
-    enum
-    {
-        TOKEN_CMD,
-        TOKEN_ARG,
-        TOKEN_PIPE,
-        TOKEN_HERDOC,
-        TOKEN_SLRD,
-        TOKEN_SRRD,
-        TOKEN_DRRD,
-        TOKEN_ERROR,
-        TOKEN_ENV,
-    } type;
-    int flag_cmg;
-    struct s_token *next;
-    char *value;
-}   t_token;
 
 t_lexer *init_lexer(char *contents, t_lexer *lexer);
 void    lexer_advance(t_lexer *lexer);
