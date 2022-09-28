@@ -21,7 +21,7 @@ int main(int ac, char **av, char **env)
     t_token *token = NULL;
     t_token *tmp;
     t_parse *parse; 
-    char *str;
+    char *str = NULL;
     lexer = malloc(sizeof(t_lexer));
     lexer->env = copy_env(env);
     while(1)
@@ -36,8 +36,21 @@ int main(int ac, char **av, char **env)
             {
                 parse = init_parsing(&token, lexer);
             }
+            if(!token)
+            {
+                free(parse->cmd);
+                parse->cmd = NULL;
+                free(parse->arg);
+                parse->arg = NULL;
+                free(parse->rdr);
+                parse->rdr = NULL;
+            }
+                
+            //printf("%s------\n",parse->cmd);
+            
             t_parse *tmp1 = parse;
-            if (lexer->flg_error == 0 && parse != NULL)
+            //printf("%s------\n",tmp1->cmd);
+            if (lexer->flg_error == 0)
             {
                 while(tmp1)
                 {
@@ -68,7 +81,7 @@ int main(int ac, char **av, char **env)
                     tmp1 = tmp1->next;
                 }
             }
-            else if (lexer->flg_error == 1 && parse != NULL)
+            else if (lexer->flg_error == 1)
                 printf("syntax_error\n");
             if (ft_strlen(str) > 0)
                 add_history(str);
@@ -89,6 +102,8 @@ int main(int ac, char **av, char **env)
             //     tmp1 = tmp1->next;
             // }
         }
+       
+
     }
 return 0;
 }
