@@ -25,6 +25,12 @@ typedef struct s_rdr
     struct s_rdr *next;
 } t_rdr ;
 
+// typedef struct s_herdoc
+// {
+//     char *value;
+//     struct s_herdoc *next;
+// }
+
 typedef struct s_parse
 {
     char *cmd;

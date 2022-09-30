@@ -6,7 +6,7 @@
 /*   By: schoukou <schoukou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 20:19:30 by schoukou          #+#    #+#             */
-/*   Updated: 2022/09/27 17:30:12 by schoukou         ###   ########.fr       */
+/*   Updated: 2022/09/30 23:57:07 by schoukou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,10 +89,10 @@ t_parse *init_parsing(t_token **token, t_lexer *lexer)
             tmp->arg[i] = ft_strdup(head->value);
             tmp->arg[++i] = NULL;
         }
-        // else if (head->type == 3)
-        // {
-
-        // }
+        else if (head->type == 3)
+        {
+            
+        }
         else if (head->type == 4 || head->type == 5 || head->type == 6)
         {
             rdr = add_rdr(head->value, head->type);

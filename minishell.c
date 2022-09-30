@@ -56,7 +56,7 @@ int main(int ac, char **av, char **env)
                 {
                     if (tmp1->cmd != NULL)
                     {
-                        printf("cmd = |%s|\n", tmp1->cmd);
+                        printf("cmd = %s\n", tmp1->cmd);
                         free(tmp1->cmd);
                     }
                     if (tmp1->arg != NULL)
