@@ -6,7 +6,7 @@
 /*   By: schoukou <schoukou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 22:10:53 by schoukou          #+#    #+#             */
-/*   Updated: 2022/10/17 00:04:54 by schoukou         ###   ########.fr       */
+/*   Updated: 2022/10/19 03:18:47 by schoukou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,10 +63,18 @@ char	*dollar_handler(t_lexer *lexer)
 	char	*s;
 	char	*c;
 
+	exitm = 0;
 	s = ft_strdup("");
 	c = ft_strdup("");
 	if (lexer->c == '$')
 		lexer_advance(lexer);
+	if (lexer->c == '?')
+		{
+			s = ft_strjoin(s, ft_itoa(exitm));
+			free(c);
+			lexer_advance(lexer);
+			return (s);
+		}
 	if (lexer->c != '_' && !ft_isalnum(lexer->c))
 	{
 		s = ft_strjoin(s, "$");

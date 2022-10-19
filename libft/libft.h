@@ -6,7 +6,7 @@
 /*   By: schoukou <schoukou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 16:03:27 by schoukou          #+#    #+#             */
-/*   Updated: 2022/08/01 22:44:33 by schoukou         ###   ########.fr       */
+/*   Updated: 2022/10/18 19:02:43 by schoukou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,4 +56,5 @@ void			ft_putnbr_fd(int n, int fd);
 void			ft_putendl_fd(char *s, int fd);
 void			ft_striteri(char *s, void (*f)(unsigned int, char*));
 char			**ft_split(char const *s, char c);
+int				ft_strcmp(const char *s1, const char *s2);
 #endif
