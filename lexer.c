@@ -6,7 +6,7 @@
 /*   By: schoukou <schoukou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 23:33:34 by schoukou          #+#    #+#             */
-/*   Updated: 2022/10/21 08:37:11 by schoukou         ###   ########.fr       */
+/*   Updated: 2022/10/23 01:57:43 by schoukou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,17 @@ void	lexer_skip_space(t_lexer *lexer)
 	}
 }
 
+void error_rdr(t_lexer *lexer)
+{
+	while(1)
+	{
+		if (lexer->c != '>' && lexer->c != '<')
+			break;
+		lexer_advance(lexer);
+	}
+	lexer->flg_error = 1;
+}
+
 t_token	*get_next_token(t_lexer *lexer)
 {
 	while (lexer->c != '\0')
@@ -58,11 +69,11 @@ t_token	*get_next_token(t_lexer *lexer)
 			&& lexer->c != '<' && lexer->flg == 1)
 		{
 			lexer->flg = 0;
-			return (init_token(TOKEN_CMD, collect_string(lexer)));
+			return (init_token(TOKEN_CMD, collect_string(lexer), lexer));
 		}
 		else if (lexer->c != '>' && lexer->c != '|'
 			&& lexer->c != '<' && lexer->flg == 0)
-			return (init_token(TOKEN_ARG, collect_string(lexer)));
+			return (init_token(TOKEN_ARG, collect_string(lexer), lexer));
 		else if (lexer->c == '\'')
 			return (handle_single_quote(lexer));
 		else if (lexer->c == '"')
@@ -74,26 +85,32 @@ t_token	*get_next_token(t_lexer *lexer)
 			lexer_advance(lexer);
 			if (lexer->c == '>')
 				return (lexer_advance_with_token(lexer, init_token(TOKEN_DRRD,
-							get_current_char_as_string_redirection(lexer))));
-			else
+							get_current_char_as_string_redirection(lexer), lexer)));
+			else if (lexer->c != '<' && lexer->c != '>')
 				return (lexer_advance_with_token(lexer, init_token(TOKEN_SRRD,
-							get_current_char_as_string_redirection(lexer))));
+							get_current_char_as_string_redirection(lexer), lexer)));
+			else
+				error_rdr(lexer);
 		}
 		else if (lexer->c == '<')
 		{
 			lexer_advance(lexer);
 			if (lexer->c == '<')
 				return (lexer_advance_with_token(lexer, init_token(TOKEN_HERDOC,
-							get_current_char_as_string_redirection(lexer))));
-			else
+							get_current_char_as_string_redirection(lexer), lexer)));
+			else if (lexer->c != '<' && lexer->c != '>')
 				return (lexer_advance_with_token(lexer, init_token(TOKEN_SLRD,
-							get_current_char_as_string_redirection(lexer))));
+							get_current_char_as_string_redirection(lexer), lexer)));
+			else
+				error_rdr(lexer);
 		}
 		else if (lexer->c == '$')
-			return (init_token(TOKEN_ENV, get_current_char_as_string_2(lexer)));
+			return (init_token(TOKEN_ENV, get_current_char_as_string_2(lexer), lexer));
 		else
 			return (lexer_advance_with_token(lexer, init_token(TOKEN_ARG,
-						collect_string(lexer))));
+						collect_string(lexer), lexer)));
+		if (lexer->flg_error)
+			break ;
 	}
 	return (NULL);
 }

@@ -6,11 +6,30 @@
 /*   By: schoukou <schoukou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 23:57:04 by schoukou          #+#    #+#             */
-/*   Updated: 2022/10/16 23:38:10 by schoukou         ###   ########.fr       */
+/*   Updated: 2022/10/23 02:03:21 by schoukou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
+
+char	*join_to_str_handle(t_lexer *lexer, char *s, char *str)
+{
+	lexer_advance(lexer);
+	while (lexer->c != '\0' && lexer->c != '"')
+	{
+		if (lexer->c == '$')
+			s = dollar_handler(lexer);
+		else
+		{
+			s = get_current_char_as_string(lexer);
+			if (lexer->c != '\0' && lexer->c != '"')
+				lexer_advance(lexer);
+		}
+		str = ft_strjoin(str, s);
+		free(s);
+	}
+	return (str);
+}
 
 char	*join_to_str(t_lexer *lexer)
 {
@@ -31,22 +50,7 @@ char	*join_to_str(t_lexer *lexer)
 		}
 	}
 	if (lexer->c == '"')
-	{
-		lexer_advance(lexer);
-		while (lexer->c != '\0' && lexer->c != '"')
-		{
-			if (lexer->c == '$')
-				s = dollar_handler(lexer);
-			else
-			{
-				s = get_current_char_as_string(lexer);
-				if (lexer->c != '\0' && lexer->c != '"')
-					lexer_advance(lexer);
-			}
-			str = ft_strjoin(str, s);
-			free(s);
-		}
-	}
+		str = join_to_str_handle(lexer, s, str);
 	if (lexer->c != '\'' && lexer->c != '"')
 		lexer->flg_error = 1;
 	return (str);
@@ -81,10 +85,10 @@ t_token	*handle_single_quote(t_lexer *lexer)
 	if (lexer->flg == 1)
 	{
 		lexer->flg = 0;
-		return (init_token(TOKEN_CMD, str));
+		return (init_token(TOKEN_CMD, str, lexer));
 	}
 	else
-		return (init_token(TOKEN_ARG, str));
+		return (init_token(TOKEN_ARG, str, lexer));
 }
 
 t_token	*handle_double_quote(t_lexer *lexer)
@@ -101,21 +105,14 @@ t_token	*handle_double_quote(t_lexer *lexer)
 	}
 	lexer_advance(lexer);
 	if (lexer->flg == 1)
-		return (init_token(TOKEN_CMD, str));
+		return (init_token(TOKEN_CMD, str, lexer));
 	else
-		return (init_token(TOKEN_ARG, str));
+		return (init_token(TOKEN_ARG, str, lexer));
 }
 
-char	*collect_string(t_lexer *lexer)
+char	*collect_string_handle(t_lexer *lexer, char *s)
 {
-	char	*value;
-	char	*s;
-
-	value = ft_calloc(1, sizeof(char));
-	value[0] = '\0';
-	while (lexer->c != '\0')
-	{
-		if (lexer->c == '"' || lexer->c == '\'')
+if (lexer->c == '"' || lexer->c == '\'')
 		{
 			s = join_to_str(lexer);
 			lexer_advance(lexer);
@@ -128,6 +125,22 @@ char	*collect_string(t_lexer *lexer)
 			else
 				s = ft_strdup("");
 		}
+	return (s);
+}
+
+char	*collect_string(t_lexer *lexer)
+{
+	char	*value;
+	char	*s;
+
+	value = ft_calloc(1, sizeof(char));
+	value[0] = '\0';
+	while (lexer->c != '\0')
+	{
+		if (lexer->c == '"' || lexer->c == '\'')
+			s = collect_string_handle(lexer, s);
+		else if (lexer->c == '$')
+            s = collect_string_handle(lexer, s);
 		else if (lexer->c != '\'' && lexer->c != '"' && lexer->c != '>'
 			&& lexer->c != '<' && lexer->c != ' '
 			&& lexer->c != '|' && lexer->c != '\0')
@@ -194,10 +207,8 @@ char	*get_current_char_as_string_3(t_lexer *lexer)
 char	*get_current_char_as_string_redirection(t_lexer *lexer)
 {
 	char	*str;
-	int		size;
 
-	size = 0;
-	str = malloc(size + 1);
+	str = ft_strdup("");
 	if (lexer->c == '>' || lexer->c == '<')
 		lexer_advance(lexer);
 	if (lexer->c == ' ')
@@ -238,5 +249,5 @@ t_token	*collect_pipe(t_lexer *lexer)
 {
 	lexer->flg = 1;
 	return (lexer_advance_with_token(lexer, init_token(TOKEN_PIPE,
-				get_current_char_as_string(lexer))));
+				get_current_char_as_string(lexer), lexer)));
 }

@@ -6,7 +6,7 @@
 /*   By: schoukou <schoukou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/09/24 20:19:30 by schoukou          #+#    #+#             */
-/*   Updated: 2022/10/17 00:16:33 by schoukou         ###   ########.fr       */
+/*   Updated: 2022/10/22 23:38:24 by schoukou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,13 +43,14 @@ void	add_back_parse(t_parse **parse, t_parse *tmp)
 	}
 }
 
-t_rdr	*add_rdr(char *str, int type)
+t_rdr	*add_rdr(char *str, int type, int herdoc)
 {
 	t_rdr	*rdr;
 
 	rdr = malloc(sizeof(t_rdr));
 	rdr->value = ft_strdup(str);
 	rdr->type = type;
+	rdr->herdoc = herdoc;
 	rdr->next = NULL;
 	return (rdr);
 }
@@ -103,7 +104,7 @@ t_parse	*init_parsing(t_token **token, t_lexer *lexer)
 		}
 		else if (head->e_type == 4 || head->e_type == 5 || head->e_type == 6 || head->e_type == 3)
 		{
-			rdr = add_rdr(head->value, head->e_type);
+			rdr = add_rdr(head->value, head->e_type, head->rdr_flg);
 			add_back_rdr(&tmp->rdr, rdr);
 		}
 		else if (head->e_type == 2)
@@ -119,3 +120,4 @@ t_parse	*init_parsing(t_token **token, t_lexer *lexer)
 	add_back_parse(&parse, tmp);
 	return (parse);
 }
+

@@ -6,7 +6,7 @@
 /*   By: schoukou <schoukou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 22:23:14 by schoukou          #+#    #+#             */
-/*   Updated: 2022/10/18 22:58:30 by schoukou         ###   ########.fr       */
+/*   Updated: 2022/10/23 00:11:35 by schoukou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ typedef struct s_rdr
 	int				type;
 	char			*value;
 	struct s_rdr	*next;
+	int				herdoc;
+	int				fd;
 }	t_rdr;
 // typedef struct s_herdoc
 // {
@@ -64,7 +66,8 @@ typedef struct s_parse
 t_lexer	*init_lexer(char *contents, t_lexer *lexer);
 void	lexer_advance(t_lexer *lexer);
 void	lexer_skip_space(t_lexer *lexer);
-t_token	*init_token(int type, char *value);
+// t_token	*init_tok÷en(int type, char *value);
+t_token	*init_token(int type, char *value, t_lexer *lexer);
 t_token	*get_next_token(t_lexer *lexer);
 char	*collect_string(t_lexer *lexer);
 char	*get_current_char_as_string(t_lexer *lexer);
