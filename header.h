@@ -6,7 +6,7 @@
 /*   By: schoukou <schoukou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 22:23:14 by schoukou          #+#    #+#             */
-/*   Updated: 2022/10/23 00:11:35 by schoukou         ###   ########.fr       */
+/*   Updated: 2022/10/24 01:43:48 by schoukou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,7 @@ typedef struct s_lexer
 	char			*contents;
 	int				flg;
 	int				x;
+	int				y;
 	int				flg_error;
 	char			**env;
 }	t_lexer;
@@ -87,4 +88,12 @@ t_token	*collect_pipe(t_lexer *lexer);
 char	**copy_env(char **env);
 char	*dollar_handler(t_lexer *lexer);
 t_parse	*init_parsing(t_token **token, t_lexer *lexer);
+void	error_rdr(t_lexer *lexer);
+char	*stock_rdr_value(t_lexer *lexer, char *str);
+char	*collect_string_handle(t_lexer *lexer, char *s);
+char	*join_to_str(t_lexer *lexer);
+t_rdr	*add_rdr(char *str, int type, int herdoc);
+void	add_back_parse(t_parse **parse, t_parse *tmp);
+void	add_back_rdr(t_rdr **rdr, t_rdr *tmp);
+int	count_arg(t_token *head);
 #endif
