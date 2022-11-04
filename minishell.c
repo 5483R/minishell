@@ -6,7 +6,7 @@
 /*   By: schoukou <schoukou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 08:44:28 by schoukou          #+#    #+#             */
-/*   Updated: 2022/11/04 00:10:25 by schoukou         ###   ########.fr       */
+/*   Updated: 2022/11/04 15:20:44 by schoukou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,117 +47,6 @@ int	bigger(int a, int c)
     return (c);
 }
 
-int check_space(char *str)
-{
-	int i = 0;
-	while(str[i] && str[i] != ' ')
-		i++;
-	return (i);
-}
-char *env_search_h(char *str, t_lexer *lexer)
-{
-	t_env *tmp = (*lexer->_env);
-	while(tmp)
-	{
-		if (!ft_strcmp(tmp->key, str))
-		{
-			free (str);
-			return (ft_strdup(tmp->value));
-		}
-		tmp = tmp->next;
-	}
-	free(str);
-	return (ft_strdup("\0"));
-}
-
-char *check_h(char *str, t_lexer *lexer)
-{
-	int i = 0;
-	char *tmp = ft_strdup("");
-	char *tmp1;
-	int x;
-	while(str[i])
-	{
-		if (str[i] == '$')
-		{
-			x = check_space(&str[i]);
-			tmp1 = ft_substr(str, i + 1, x);
-			tmp1 = env_search_h(tmp1, lexer);
-			tmp = ft_strjoin(tmp, tmp1);
-			free(tmp1);
-			i += x + 1;
-		}
-		else
-		{
-			tmp[i] = str[i];
-			i++;
-		}
-	}
-	free(str);
-	return (tmp);
-}
-
-void    ft_herdoc(t_rdr   *tmp1, t_lexer *lexer)
-{
-    char *a;
-    int fd[2];
-	int	id;
-	int status;
-
-    if (tmp1->type == 3 && tmp1->herdoc)
-    {
-		signal(SIGINT, SIG_IGN);
-		pipe(fd);
-		id = fork();
-		if (id == 0)
-		{
-			signal(SIGINT, SIG_DFL);
-        	a = readline("> ");
-			if (a)
-			{
-				close(fd[0]);
-				while (ft_strncmp(a, tmp1->value,
-					bigger(ft_strlen(a),ft_strlen(tmp1->value))))
-				{
-					if (!lexer->flg_quote)
-						a = check_h(a, lexer);
-					ft_putstr_fd(a, fd[1]);
-					ft_putstr_fd("\n", fd[1]);
-					free(a);
-					a = readline("> ");
-					if (!a)
-						break ;
-				}
-        		free(a);
-			}
-        	close(fd[1]);
-			exit(0);
-		}
-		close(fd[1]);
-		waitpid(-1, &status, 0);
-		tmp1->fd = fd[0];
-    }
-}
-void	herdoc_handler(t_parse *parse, t_lexer *lexer)
-{
-	t_parse *tmp;
-	t_rdr   *tmp1;
-
-    tmp = parse;
-	while (tmp)
-	{
-		if (tmp->rdr != NULL)
-		{
-			tmp1 = tmp->rdr;
-            while(tmp1)
-            {
-                ft_herdoc(tmp1, lexer);
-                tmp1 = tmp1->next;
-            }
-		}
-		tmp = tmp->next;
-	}
-}
 
 void	rdr_create_files(t_parse **parse, t_lexer *lexer)
 {
