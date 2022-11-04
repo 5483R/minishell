@@ -6,7 +6,7 @@
 /*   By: schoukou <schoukou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 22:23:14 by schoukou          #+#    #+#             */
-/*   Updated: 2022/11/04 00:08:39 by schoukou         ###   ########.fr       */
+/*   Updated: 2022/11/04 15:24:59 by schoukou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,13 @@ char	*join_to_str(t_lexer *lexer);
 t_rdr	*add_rdr(char *str, int type, int herdoc);
 void	add_back_parse(t_parse **parse, t_parse *tmp);
 void	add_back_rdr(t_rdr **rdr, t_rdr *tmp);
-int	count_arg(t_token *head);
-void ft_close_fd(void);
-void    free_cmds(t_parse *cmd);
+int		count_arg(t_token *head);
+void	ft_close_fd(void);
+void	free_cmds(t_parse *cmd);
+char	*check_h(char *str, t_lexer *lexer);
+void    ft_herdoc(t_rdr   *tmp1, t_lexer *lexer);
+void	herdoc_handler(t_parse *parse, t_lexer *lexer);
+int		check_space(char *str);
+void	rdr_create_files(t_parse **parse, t_lexer *lexer);
 
 #endif
