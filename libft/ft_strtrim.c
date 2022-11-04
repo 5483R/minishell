@@ -3,15 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strtrim.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schoukou <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: afaris <afaris@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/21 05:29:33 by schoukou          #+#    #+#             */
-/*   Updated: 2021/11/21 05:31:55 by schoukou         ###   ########.fr       */
+/*   Created: 2021/11/11 18:59:22 by afaris            #+#    #+#             */
+/*   Updated: 2021/11/14 18:41:07 by afaris           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
-int	is_in_set(char c, const char *set)
+static size_t	is_there(char c, char const *set)
 {
 	int	i;
 
@@ -25,43 +26,59 @@ int	is_in_set(char c, const char *set)
 	return (0);
 }
 
-int	get_ln(const char *s, const char *set, int offset)
+static size_t	end_pos(char const *s1, char const *set, int start_pos)
 {
-	int	i;
+	int		i;
+
+	i = ft_strlen(s1) - 1;
+	while (i >= start_pos)
+	{
+		if (!is_there(s1[i], set))
+			return (i);
+		else if (is_there(s1[i], set) && (!is_there(s1[i - 1], set)))
+			return (i - 1);
+		i--;
+	}
+	return (ft_strlen(s1));
+}
+
+static size_t	start_pos(char const *s1, char const *set)
+{
+	int		i;
 
 	i = 0;
-	if (offset == 0)
+	while (s1[i])
 	{
-		while (s[i] && is_in_set(s[i], set))
-			i++;
+		if (!is_there(s1[i], set))
+			return (i);
+		else if (is_there(s1[i], set) && !is_there(s1[i + 1], set))
+			return (i + 1);
+		i++;
 	}
-	else
-	{
-		offset--;
-		while (s[offset - i] && is_in_set(s[offset - i], set))
-			i++;
-	}
-	return (i);
+	return (0);
 }
 
 char	*ft_strtrim(char const *s1, char const *set)
 {
-	int		ln1;
-	int		ln2;
-	int		len;
-	char	*p;
+	char	*str;
+	int		start;
+	int		end;
+	int		i;
 
-	if (s1 == NULL || set == NULL)
-		return (NULL);
-	len = ft_strlen(s1);
-	ln1 = get_ln(s1, set, 0);
-	if (ln1 >= len)
-		return (ft_strdup("\0"));
-	ln2 = get_ln(s1, set, len);
-	p = ft_substr(s1, ln1, len - (ln1 + ln2));
-	return (p);
+	i = 0;
+	if (!s1 || !set)
+		return (0);
+	start = start_pos(s1, set);
+	end = end_pos(s1, set, start);
+	str = (char *)malloc(sizeof(char) * (end - start) + 2);
+	if (!str)
+		return (0);
+	while (start <= end)
+	{
+		str[i] = s1[start];
+		i++;
+		start++;
+	}
+	str[i] = '\0';
+	return (str);
 }
-/*int main()
-{
-	printf("%s", ft_strtrim("\0hhh\0", "\0"));
-}*/

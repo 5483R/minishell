@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schoukou <schoukou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: afaris <afaris@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/20 16:43:14 by schoukou          #+#    #+#             */
-/*   Updated: 2022/04/15 02:30:33 by schoukou         ###   ########.fr       */
+/*   Created: 2021/11/10 20:29:12 by afaris            #+#    #+#             */
+/*   Updated: 2021/11/19 20:19:54 by afaris           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,28 +14,20 @@
 
 char	*ft_strchr(const char *s, int c)
 {
-	int	i;
+	int				i;
+	char			*str;
+	unsigned char	ch;
 
+	ch = c;
+	str = (char *)s;
 	i = 0;
-	while (s[i] != '\0')
+	while (str[i])
 	{
-		if (s[i] == (char)c)
-		{
-			return ((char *) &s[i]);
-		}
+		if (str[i] == ch)
+			return (&str[i]);
 		i++;
 	}
-	if (c == '\0' && s[i] == '\0')
-	{
-		return ((char *) &s[i]);
-	}
-	return (0);
+	if (str[i] == ch)
+		return (&str[i]);
+	return (NULL);
 }
-/*int main()
-{
-	char p[] = "tripouille";
-	printf("%s\n", ft_strchr(p, 'z'));
-	printf("%s", strchr(p, 't' + 256));
-
-
-}*/

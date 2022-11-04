@@ -58,3 +58,15 @@ int substring_length(char *str, char to_stop, int mode)
     }
     return (NONE);
 }
+
+int double_ptr_len(char **buff)
+{
+    int i;
+
+    i = 0;
+    if (!buff)
+        return (i);
+    while (buff[i])
+        i++;
+    return (i);
+}

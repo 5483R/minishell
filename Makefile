@@ -1,12 +1,12 @@
 src = *.c ./libft/*.c ./execution/*/*.c ./execution/*/*/*.c ./execution/*.c
 minishell = minishell
-FLAGS =  -lreadline -Wall -Wextra -Werror -fsanitize= -g3
+FLAGS = -lreadline #-Wall -Wextra -Werror -g3
 CC = cc
 
 all : minishell
 	
 $(minishell): $(src)	
-	@$(CC) $(FLAGS) $(RDLINE) $(src) -o minishell
+	@$(CC) $(FLAGS) $(RDLINE) $(src) -o minishell -lreadline
 	@tput setaf 2; echo "MINISHELL IS READY"
 
 clean :

@@ -6,7 +6,7 @@
 /*   By: schoukou <schoukou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/23 21:48:59 by schoukou          #+#    #+#             */
-/*   Updated: 2022/10/23 21:54:04 by schoukou         ###   ########.fr       */
+/*   Updated: 2022/11/04 00:11:20 by schoukou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,13 +17,10 @@ char	*collect_string(t_lexer *lexer)
 	char	*value;
 	char	*s;
 
-	value = ft_calloc(1, sizeof(char));
-	value[0] = '\0';
-	while (lexer->c != '\0')
+	value = ft_strdup("\0");
+	while (lexer->c)
 	{
-		if (lexer->c == '"' || lexer->c == '\'')
-			s = collect_string_handle(lexer, s);
-		else if (lexer->c == '$')
+		if (lexer->c == '"' || lexer->c == '\'' || lexer->c == '$')
 			s = collect_string_handle(lexer, s);
 		else if (lexer->c != '\'' && lexer->c != '"' && lexer->c != '>'
 			&& lexer->c != '<' && lexer->c != ' '

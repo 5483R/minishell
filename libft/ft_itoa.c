@@ -3,65 +3,71 @@
 /*                                                        :::      ::::::::   */
 /*   ft_itoa.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schoukou <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: afaris <afaris@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/20 17:51:17 by schoukou          #+#    #+#             */
-/*   Updated: 2021/11/20 19:42:40 by schoukou         ###   ########.fr       */
+/*   Created: 2021/11/14 12:27:33 by afaris            #+#    #+#             */
+/*   Updated: 2021/11/16 17:27:56 by afaris           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
-int	ft_intlen(int value)
+static int	len_count(int n)
 {
-	int	counter;
+	size_t	i;
 
-	counter = 0;
-	if (value < 0)
+	i = 0;
+	if (n <= 0)
 	{
-		counter++;
-		value = -value;
+		n *= -1;
+		i++;
 	}
-	else if (value == 0)
-		return (1);
-	while (value > 0)
+	while (n)
 	{
-		value /= 10;
-		counter++;
+		n /= 10;
+		i++;
 	}
-	return (counter);
+	return (i);
 }
 
-char	*ft_itoa(int x)
+static char	*convert(int n, int len, char *str)
 {
-	char		*s;
-	size_t		len;
-	long int	n;
+	unsigned int	nb;
+	int				i;
 
-	n = x;
-	if (x == -2147483648)
-		return (ft_strdup("-2147483648"));
-	len = ft_intlen(n) + 1;
-	s = malloc(sizeof(char) * len);
-	if (s == NULL)
-		return (NULL);
-	if (n == 0)
-		s[0] = '0';
+	i = 0;
 	if (n < 0)
 	{
-		s[0] = '-';
-		n = -n;
+		nb = -n;
+		str[i] = '-';
+		i++;
 	}
-	s[len - 1] = '\0';
-	while (n && len--)
+	else
+		nb = n;
+	while (len >= i && nb)
 	{
-		s[len - 1] = (n % 10) + '0';
-		n /= 10;
+		str[len] = nb % 10 + '0';
+		nb = nb / 10;
+		len--;
 	}
-	return (s);
+	return (str);
 }
-/*int main()
+
+char	*ft_itoa(int n)
 {
- int a = -50;
- char *x = ft_itoa(a);
- printf("%s", x);
-}*/
+	char	*str;
+	int		len;
+
+	len = len_count(n);
+	str = (char *)malloc(sizeof(char) * (len + 1));
+	if (!str)
+		return (0);
+	str[len] = '\0';
+	len--;
+	if (n == 0)
+	{
+		str[len] = '0';
+		return (str);
+	}
+	return (convert(n, len, str));
+}

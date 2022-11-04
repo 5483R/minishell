@@ -6,7 +6,7 @@
 /*   By: schoukou <schoukou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/11 23:57:04 by schoukou          #+#    #+#             */
-/*   Updated: 2022/10/23 21:49:27 by schoukou         ###   ########.fr       */
+/*   Updated: 2022/11/03 22:33:16 by schoukou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,10 @@ char	*join_to_str_handle(t_lexer *lexer, char *s, char *str)
 	while (lexer->c != '\0' && lexer->c != '"')
 	{
 		if (lexer->c == '$')
+		{
+			lexer_advance(lexer);
 			s = dollar_handler(lexer);
+		}
 		else
 		{
 			s = get_current_char_as_string(lexer);
@@ -36,7 +39,8 @@ char	*join_to_str(t_lexer *lexer)
 	char	*str;
 	char	*s;
 
-	str = ft_strdup("");
+	str = malloc(2);
+	str[0] = '\0';
 	if (lexer->c == '\'')
 	{
 		lexer_advance(lexer);
@@ -44,15 +48,17 @@ char	*join_to_str(t_lexer *lexer)
 		{
 			s = get_current_char_as_string(lexer);
 			str = ft_strjoin(str, s);
-			free(s);
 			if (lexer->c != '\0' && lexer->c != '\'')
 				lexer_advance(lexer);
+			free(s);
 		}
 	}
 	if (lexer->c == '"')
 		str = join_to_str_handle(lexer, s, str);
 	if (lexer->c != '\'' && lexer->c != '"')
+	{
 		lexer->flg_error = 1;
+	}
 	return (str);
 }
 
@@ -65,6 +71,7 @@ char	*stock_value(t_lexer *lexer, char *str)
 	{
 		str2 = join_to_str(lexer);
 		str = ft_strjoin(str, str2);
+		free (str2);
 		lexer_advance(lexer);
 	}
 	else if (lexer->c != '"' && lexer->c != '\'')
@@ -81,13 +88,18 @@ t_token	*handle_single_quote(t_lexer *lexer)
 {
 	char	*str;
 
-	str = ft_strdup("");
+	str = ft_strdup("\0");
 	while (lexer->c != '\0')
 	{
 		if (lexer->c == ' ' || lexer->c == '|'
 			|| lexer->c == '<' || lexer->c == '>')
 			break ;
 		str = stock_value(lexer, str);
+		if (!str[0])
+		{
+			free(str);
+			str = NULL;
+		}
 	}
 	if (lexer->flg == 1)
 	{
@@ -109,7 +121,9 @@ char	*collect_string_handle(t_lexer *lexer, char *s)
 	{
 		lexer_advance(lexer);
 		if (lexer->c != '\'' && lexer->c != '"')
+		{
 			s = dollar_handler(lexer);
+		}
 		else
 			s = ft_strdup("");
 	}

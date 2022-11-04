@@ -3,40 +3,34 @@
 /*                                                        :::      ::::::::   */
 /*   ft_substr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schoukou <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: afaris <afaris@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/20 17:42:57 by schoukou          #+#    #+#             */
-/*   Updated: 2021/11/28 15:34:06 by schoukou         ###   ########.fr       */
+/*   Created: 2021/11/10 20:26:34 by afaris            #+#    #+#             */
+/*   Updated: 2021/11/21 20:18:45 by afaris           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
 char	*ft_substr(char const *s, unsigned int start, size_t len)
 {
-	char	*p;
-	size_t	i;
+	char			*str;
+	unsigned int	i;
 
-	i = 0;
 	if (!s)
 		return (NULL);
-	if (ft_strlen(s) < start)
+	if (ft_strlen(&s[start]) < len)
+		len = ft_strlen(&s[start]);
+	str = (char *)malloc(sizeof(char) * (len + 1));
+	i = 0;
+	if (!str)
+		return (0);
+	while (s[start] && i < len && start < ft_strlen(s))
 	{
-		return (ft_strdup(""));
-	}
-	p = (char *)malloc(len + 1);
-	if (!p)
-		return (NULL);
-	while (i < len)
-	{
-		p[i] = s[start];
-		i++;
+		str[i] = s[start];
 		start++;
+		i++;
 	}
-	p[i] = '\0';
-	return (p);
+	str[i] = '\0';
+	return (str);
 }
-/*int main()
-{
-    printf("%s\n", ft_substr("tripouille", 1, 1));
-    return 0;
-}*/

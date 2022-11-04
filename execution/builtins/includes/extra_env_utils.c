@@ -25,12 +25,12 @@ void    print_env_items(t_env *env)
     }
 }
 
-void    remove_env_item(char *item, t_env *env, t_env **head)
+void    remove_env_item(char *item, t_env **head)
 {
     t_env *current;
     t_env *found;
     
-    current = env;
+    current = *head;
     if (ft_strcmp(item, current->key) == 0)
     {
         *head = current->next;
@@ -88,11 +88,3 @@ t_env   *get_env_item_or_none(char *key, t_env *env)
     return (NULL);
 }
 
-void    update_env_item(t_env *item, char *arg)
-{
-    char *value;
-
-    value = extract_env_value(arg);
-    free(item->value);
-    item->value = value;
-}

@@ -3,12 +3,13 @@
 /*                                                        :::      ::::::::   */
 /*   ft_striteri.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schoukou <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: afaris <afaris@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/20 19:01:54 by schoukou          #+#    #+#             */
-/*   Updated: 2021/11/20 19:03:37 by schoukou         ###   ########.fr       */
+/*   Created: 2021/11/13 14:20:54 by afaris            #+#    #+#             */
+/*   Updated: 2021/11/17 21:34:18 by afaris           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
 void	ft_striteri(char *s, void (*f)(unsigned int, char*))
@@ -16,24 +17,12 @@ void	ft_striteri(char *s, void (*f)(unsigned int, char*))
 	int	i;
 
 	i = 0;
-	if (s == 0)
-		return ;
-	while (s[i] != '\0')
+	if (s)
 	{
-		f(i, &s[i]);
-		i++;
+		while (s[i])
+		{
+			f (i, &s[i]);
+			i++;
+		}
 	}
 }
-
-/*void	ftt(unsigned int i , char *c)
-{
-	((void) i);
-	if (*c >= 'a' && *c <= 'z')
-		*c -= 32;
-}*/
-/*int main()
-{
-	char s[] = "sfhgfhf";
-	ft_striteri(s,ftt);
-	printf("%s", s);
-}*/

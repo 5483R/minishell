@@ -23,7 +23,7 @@ int	count_arg(t_token *head)
 			break ;
 		else if (head->e_type == 1)
 			i++;
-			head = head->next;
+		head = head->next;
 	}
 	return (i);
 }

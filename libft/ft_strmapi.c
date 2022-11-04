@@ -3,46 +3,33 @@
 /*                                                        :::      ::::::::   */
 /*   ft_strmapi.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schoukou <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: afaris <afaris@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2021/11/20 17:39:23 by schoukou          #+#    #+#             */
-/*   Updated: 2021/11/20 17:42:48 by schoukou         ###   ########.fr       */
+/*   Created: 2021/11/13 12:14:31 by afaris            #+#    #+#             */
+/*   Updated: 2021/11/14 16:42:40 by afaris           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "libft.h"
 
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char))
 {
-	int		i;
-	char	*p;
-	int		len;
+	unsigned int	i;
+	char			*new;
+	char			*old;
 
+	if (!s || !f)
+		return (0);
+	old = (char *)s;
+	new = (char *)malloc(ft_strlen(old) + 1);
 	i = 0;
-	if (s == 0)
-		return (NULL);
-	len = ft_strlen(s);
-	p = (char *)malloc(len + 1);
-	if (p == NULL)
-		return (NULL);
+	if (!new)
+		return (0);
 	while (s[i])
 	{
-		p[i] = f(i, s[i]);
+		new[i] = f(i, old[i]);
 		i++;
 	}
-	p[i] = '\0';
-	return (p);
+	new[i] = '\0';
+	return (new);
 }
-/*char	ftt(unsigned int i , char c)
-{
-	((void) i);
-	
-	if (c >= 'a' && c <= 'z')
-		c -= 32;
-	return (c);
-}*/
-/*int main()
-{
-	char *s = "sfhgfhf";
-
-	printf("%s", ft_strmapi(s,ftt));
-}*/
