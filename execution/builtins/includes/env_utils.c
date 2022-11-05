@@ -26,15 +26,18 @@ char    *extract_env_key(char *item)
 
     i = 0;
     len = substring_length(item, '=', BEFORE);
+    printf("len  = %d\n", len);
     env_key = malloc(sizeof(char) * (len + 1));
     if (!env_key)
         raise_error("Memory allocation failed!", "malloc", EXIT_FAILURE, TRUE);
+    printf("env_key: %s\n", item);
     while (item[i] && item[i] != '=')
     {
         env_key[i] = item[i];
         i++;
     }
     env_key[i] = '\0';
+    
     if (!env_key_valid(env_key))
     {
         raise_error("Not a valid identifier", env_key, EXIT_FAILURE, FALSE);

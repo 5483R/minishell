@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   herdoc_2.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schoukou <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: schoukou <schoukou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 15:25:21 by schoukou          #+#    #+#             */
-/*   Updated: 2022/11/04 15:25:23 by schoukou         ###   ########.fr       */
+/*   Updated: 2022/11/04 15:29:41 by schoukou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ int	check_space(char *str)
 		i++;
 	return (i);
 }
+
 char	*env_search_h(char *str, t_lexer *lexer)
 {
 	t_env *tmp = (*lexer->_env);

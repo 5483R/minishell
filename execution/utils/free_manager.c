@@ -47,7 +47,9 @@ void    free_redirections(t_rdr *red)
 void    free_cmds(t_parse *cmd)
 {
     t_parse *current;
+    t_parse *tmp;
 
+    tmp = NULL;
     current = cmd;
     while (current)
     {
@@ -62,8 +64,9 @@ void    free_cmds(t_parse *cmd)
     current = cmd;
     while (current)
     {
-        free(current);
+        tmp = current;
         current = current->next;
+        free(tmp);
     }
 }
 

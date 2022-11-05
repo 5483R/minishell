@@ -19,6 +19,13 @@
 # include "../execution.h"
 # include <string.h>
 
+typedef struct l_export
+{
+    char    *key;
+    char    *value;
+    int     mode;
+}   t_export;
+
 int     is_identical(char *s1, char *s2);
 int     start_with(char *word, char *str);
 

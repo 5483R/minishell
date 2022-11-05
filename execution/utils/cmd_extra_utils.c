@@ -45,3 +45,20 @@ void    cmds_initialization(t_parse *cmds)
         current = current->next;
     }
 }
+
+void    check_cmd_path(char *path)
+{
+    struct stat file_data;
+
+    if (path)
+    {
+        stat(path, &file_data);
+        if (S_ISDIR(file_data.st_mode))
+            raise_error("Is a directory", path, 126, TRUE);
+        if (path[0] == '.' || path[0] == '/')
+        {
+            if (access(path, X_OK) == ERROR_RETURNED)
+                raise_error(NULL, path, 126, TRUE);
+        }
+    }
+}

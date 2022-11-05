@@ -11,11 +11,7 @@ void    execute_cmd(t_parse *cmd, t_env **env)
     }
     else
     {
-        if (cmd->path[0] == '.' || cmd->path[0] == '/')
-        {
-            if(access(cmd->path, X_OK) == ERROR_RETURNED)
-                raise_error(NULL, NULL, 126, TRUE);
-        }
+        check_cmd_path(cmd->path);
         if (execve(cmd->path, cmd->cmd_2d, cmd->env_2d) == ERROR_RETURNED)
             raise_error("command not found", cmd->cmd, 127, TRUE);
     }

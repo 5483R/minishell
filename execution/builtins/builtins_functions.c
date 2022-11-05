@@ -55,8 +55,13 @@ int run_pwd(t_parse *data)
     if (!is_identical(data->cmd, PWD))
         return (FALSE);
     pwd = getcwd(NULL, 0);
-    printf("%s\n", pwd);
-    free (pwd);
+    if (pwd)
+    {
+        printf("%s\n", pwd);
+        free(pwd);
+    }
+    else
+        raise_error(NULL, "pwd: error retrieving current directory", 0, FALSE);
     return (TRUE);
 }
 

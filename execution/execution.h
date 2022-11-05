@@ -5,6 +5,7 @@
 #include "builtins/builtins.h"
 #include <sys/types.h>
 #include <sys/wait.h>
+#include <sys/stat.h>
 
 #define ERROR_RETURNED -1
 #define AFTER 1
@@ -65,6 +66,7 @@ int     get_read_src(t_parse *cmd, t_exec *exe);
 int     get_write_dst(t_parse *cmd, t_exec *exe);
 int     double_ptr_len(char **buff);
 void    cmds_initialization(t_parse *cmds);
+void    check_cmd_path(char *path);
 
 
 #endif

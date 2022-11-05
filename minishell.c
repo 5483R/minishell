@@ -6,7 +6,7 @@
 /*   By: schoukou <schoukou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/27 08:44:28 by schoukou          #+#    #+#             */
-/*   Updated: 2022/11/04 15:20:44 by schoukou         ###   ########.fr       */
+/*   Updated: 2022/11/05 00:46:05 by schoukou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,6 @@ int	bigger(int a, int c)
         return (a);
     return (c);
 }
-
 
 void	rdr_create_files(t_parse **parse, t_lexer *lexer)
 {
@@ -122,7 +121,7 @@ void	after_parse(t_parse *parse, t_token *token, t_lexer *lexer)
 	if (!lexer->flg_error && parse != NULL)
 		rdr_create_files(&parse, lexer);
 	if (parse != NULL)
-		execution(parse, lexer->_env);
+	 	execution(parse, lexer->_env);
 	ft_free_list(token);
 }
 

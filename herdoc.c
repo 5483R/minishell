@@ -6,11 +6,27 @@
 /*   By: schoukou <schoukou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 15:25:12 by schoukou          #+#    #+#             */
-/*   Updated: 2022/11/04 15:28:19 by schoukou         ###   ########.fr       */
+/*   Updated: 2022/11/04 22:19:08 by schoukou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
+
+char *char_join(char *str, char a)
+{
+	char *new;
+	int	i = 0;
+	new = malloc(ft_strlen(str) + 2);
+	while(str[i])
+	{
+		new[i] = str[i];
+		i++;
+	}
+	new[i] = a;
+	new[++i] = '\0';
+	free(str);
+	return (new);
+}
 
 char    *check_h(char *str, t_lexer *lexer)
 {
@@ -20,6 +36,7 @@ char    *check_h(char *str, t_lexer *lexer)
 	char    *tmp1;
 
     tmp = ft_strdup("");
+	i = 0;
 	while (str[i])
 	{
 		if (str[i] == '$')
@@ -32,10 +49,7 @@ char    *check_h(char *str, t_lexer *lexer)
 			i += x + 1;
 		}
 		else
-		{
-			tmp[i] = str[i];
-			i++;
-		}
+			tmp = char_join(tmp, str[i++]);
 	}
 	free(str);
 	return (tmp);

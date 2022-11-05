@@ -6,7 +6,7 @@
 /*   By: schoukou <schoukou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 22:23:14 by schoukou          #+#    #+#             */
-/*   Updated: 2022/11/04 15:24:59 by schoukou         ###   ########.fr       */
+/*   Updated: 2022/11/04 21:34:39 by schoukou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,5 +115,7 @@ void    ft_herdoc(t_rdr   *tmp1, t_lexer *lexer);
 void	herdoc_handler(t_parse *parse, t_lexer *lexer);
 int		check_space(char *str);
 void	rdr_create_files(t_parse **parse, t_lexer *lexer);
+char	*env_search_h(char *str, t_lexer *lexer);
+int		bigger(int a, int c);
 
 #endif

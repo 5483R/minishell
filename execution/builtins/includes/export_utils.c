@@ -1,5 +1,25 @@
 #include "../builtins.h"
 
+
+
+// append or overwrite
+
+/*
+
+export ab+=text ---> create or update (key = ab, value = text)
+
+ab = 2;
+if export ab+=[value] ----> add [value]
+if export ab=[value]  ----> overwrite with [value]
+
+if '=' or '+=' not found in arg, and key is valid, then value ===> NULL;
+
+if arg start with something different then (a-z, A-Z, '_') before '=' or '+=' 
+                        then arg is not valid;
+
+*/
+
+
 void    create_or_update_env_item(t_env **env, char *arg)
 {
     t_env *found;
@@ -18,6 +38,5 @@ void    create_or_update_env_item(t_env **env, char *arg)
             value = extract_env_value(arg);
             update_env_value(found, value);
         }
-            
     }
 }

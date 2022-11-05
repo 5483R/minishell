@@ -1,0 +1,30 @@
+cat <afk  | ls 
+tab + ls
+echo $1printedbut1shouldNot
+
+expending inside the herDoc and vise virsa if there is a quote in delemter exp:
+cat << ""d
+$ cat << $USER
+
+tab     +     ls
+
+bash-3.2$ cat << ""d
+> $USER
+> d
+$USER
+
+===> working 
+-------------------- 
+
+
+bash-3.2$ cat << d
+> $USER
+> d
+afaris
+
+===> not working
+double / single quotes error (leaks);
+dollar not found (leaks);
+$?: (leaks);
+ ls < > file : dosen't have to show the command with syntax error
+ $PATH : command not found iy must showing up b3daaaa 
