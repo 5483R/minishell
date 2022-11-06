@@ -6,7 +6,7 @@
 /*   By: schoukou <schoukou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/04 15:25:12 by schoukou          #+#    #+#             */
-/*   Updated: 2022/11/04 22:19:08 by schoukou         ###   ########.fr       */
+/*   Updated: 2022/11/06 19:02:48 by schoukou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,12 +41,13 @@ char    *check_h(char *str, t_lexer *lexer)
 	{
 		if (str[i] == '$')
 		{
+			printf("hahuwa%s\n", str);
 			x = check_space(&str[i]);
 			tmp1 = ft_substr(str, i + 1, x);
 			tmp1 = env_search_h(tmp1, lexer);
 			tmp = ft_strjoin(tmp, tmp1);
+			i += x;
 			free(tmp1);
-			i += x + 1;
 		}
 		else
 			tmp = char_join(tmp, str[i++]);
@@ -62,6 +63,13 @@ void    ft_herdoc(t_rdr   *tmp1, t_lexer *lexer)
 	int	id;
 	int status;
 
+
+	// CTRL + C should stop every here-doc
+	// try: << anas cat | << anas cat + send CTRL + C signal 
+	// if (globa = 1)
+	// {
+	// 	retrn ;
+	// }
     if (tmp1->type == 3 && tmp1->herdoc)
     {
 		signal(SIGINT, SIG_IGN);

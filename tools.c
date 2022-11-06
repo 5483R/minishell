@@ -3,14 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   tools.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: schoukou <schoukou@student.42.fr>          +#+  +:+       +#+        */
+/*   By: gitpod <gitpod@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 22:10:53 by schoukou          #+#    #+#             */
-/*   Updated: 2022/11/03 23:50:40 by schoukou         ###   ########.fr       */
+/*   Updated: 2022/11/05 21:57:13 by gitpod           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "header.h"
+#include "execution/execution.h"
 
 int	count_2d(char **str)
 {
@@ -40,19 +41,15 @@ char	**copy_env(char **env)
 	return (copy);
 }
 
-char	*env_search(t_lexer *lexer, char *c)
+char	*env_search(t_env **env, char *c)
 {
-	t_env *tmp = (*lexer->_env);
-	while(tmp)
-	{
-		if (!ft_strcmp(tmp->key, c))
-		{
-			free (c);
-			return (ft_strdup(tmp->value));
-		}
-		tmp = tmp->next;
-	}
-	free(c);
+	t_env	*item;
+
+	item = get_env_item_or_none(c, *env);
+	if (!item || !(item && item->value))
+		return (NULL);
+	else if (item && item->value)
+		return (ft_strdup(item->value));
 	return (NULL);
 }
 
@@ -78,7 +75,7 @@ char	*dollar_handler2(t_lexer *lexer, char *s, char *c)
 			lexer_advance(lexer);
 		}
 	}
-	s = env_search(lexer, s);
+	s = env_search(lexer->_env, s);
 	if (s == NULL)
 		s = ft_strdup("\0");
 	return (s);

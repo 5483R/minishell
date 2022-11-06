@@ -6,7 +6,7 @@
 /*   By: schoukou <schoukou@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/10/16 22:23:14 by schoukou          #+#    #+#             */
-/*   Updated: 2022/11/04 21:34:39 by schoukou         ###   ########.fr       */
+/*   Updated: 2022/11/06 20:29:31 by schoukou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,8 @@
 # include "libft/libft.h"
 # include <fcntl.h>
 # include <signal.h>
+# include <sys/wait.h>
+
 
 int g_exitm;
 
@@ -74,6 +76,7 @@ typedef struct s_parse
 	struct s_parse	*next;
 }	t_parse;
 
+void	rl_replace_line(const char *text, int clear_undo);
 t_lexer	*init_lexer(char *contents, t_lexer *lexer);
 void	lexer_advance(t_lexer *lexer);
 void	lexer_skip_space(t_lexer *lexer);
@@ -117,5 +120,8 @@ int		check_space(char *str);
 void	rdr_create_files(t_parse **parse, t_lexer *lexer);
 char	*env_search_h(char *str, t_lexer *lexer);
 int		bigger(int a, int c);
+void	ft_free_list(t_token *token);
+void	add_back(t_token **list, t_token *tmp);
+void	rdr_create_files(t_parse **parse, t_lexer *lexer);
 
 #endif
