@@ -9,7 +9,10 @@ char    *extract_cmd_path(char **paths, char *cmd)
     i = 0;
     full_path = NULL;
     if (!paths)
-        return (ft_strdup(cmd));
+        return (cmd);
+    //if (access ())
+    //return (cmd);
+    //stat
     new_cmd = ft_strjoinx("/", cmd);
     while (paths[i])
     {
@@ -25,7 +28,11 @@ char    *extract_cmd_path(char **paths, char *cmd)
     }
     free(new_cmd);
     free_2d_buff(paths);
-    return (ft_strdup(cmd));
+    //printf ("command not found \n");
+    //g_exitm = 127;
+    //return (NULL);
+    //exit (num % 255);
+    return (cmd);
 }
 
 char    *find_cmd_path(char *cmd, t_env *env)
@@ -68,6 +75,16 @@ char    **get_full_cmd(char *cmd, char **args)
         full_cmd[i++] = ft_strdup(args[j++]);
     full_cmd[i] = NULL;
     return (full_cmd);
+}
+
+void    cmd_init(t_parse *cmd, t_env *env)
+{
+    cmd->id = 0;
+    cmd->write_dst = NONE;
+    cmd->env = env;
+    cmd->cmd_2d = get_full_cmd(cmd->cmd, cmd->arg);
+    cmd->env_2d = env_converter(cmd->env);
+    cmd->path = find_cmd_path(cmd->cmd, cmd->env);
 }
 
 int cmds_len(t_parse *cmds)

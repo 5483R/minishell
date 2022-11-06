@@ -18,64 +18,35 @@ void    free_2d_buff(char **buff)
     }
 }
 
-void    free_buff(char *buff)
+void    free_cmd(t_parse *cmd)
 {
-    if (buff)
+    if (cmd)
     {
-        free(buff);
-        buff= NULL;
-    }
-}
-
-void    free_redirections(t_rdr *red)
-{
-    t_rdr *current;
-
-    current = red;
-    if (current)
-    {
-        while (current)
+        if (cmd->path)
         {
-           if (current->value)
-               free(current->value);
-           current = current->next;
+            printf("cmd->path\n");
+            free(cmd->path);
+            cmd->path = NULL;
         }
-        free(red);
+        if (cmd->env_2d)
+        {
+            printf("cmd->env_2d\n");
+            free_2d_buff(cmd->env_2d);
+        }
+            
+        if (cmd->cmd_2d)
+        {
+            printf("cmd->cmd_2d\n");
+            free_2d_buff(cmd->cmd_2d);
+        }
     }
 }
 
-void    free_cmds(t_parse *cmd)
-{
-    t_parse *current;
-    t_parse *tmp;
-
-    tmp = NULL;
-    current = cmd;
-    while (current)
-    {
-        free_buff(current->cmd);
-        free_buff(current->path);
-        free_2d_buff(current->env_2d);
-        free_2d_buff(current->cmd_2d);
-        free_redirections(current->rdr);
-        free_2d_buff(current->arg);
-        current = current->next;
-    }
-    current = cmd;
-    while (current)
-    {
-        tmp = current;
-        current = current->next;
-        free(tmp);
-    }
-}
-
-void    free_all(t_parse *data, t_exec *exe)
+void    free_all(t_exec *exe)
 {
     int i;
 
     i = 0;
-    free_cmds(data);
     if (exe)
     {
         if (exe->pipes)
@@ -83,10 +54,13 @@ void    free_all(t_parse *data, t_exec *exe)
             while (exe->pipes[i])
             {
                 free(exe->pipes[i]);
+                exe->pipes[i] = NULL;
                 i++;
             }
             free(exe->pipes);
+            exe->pipes = NULL;
         }
         free(exe);
+        exe = NULL;
     }
 }

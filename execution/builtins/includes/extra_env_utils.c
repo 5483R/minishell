@@ -44,7 +44,7 @@ void    remove_env_item(char *item, t_env **head)
             {
                 found = current->next;
                 current->next = found->next;
-                free_env_item(found);
+                 free_env_item(found);
                 break ;
             }
             current = current->next;
@@ -88,3 +88,14 @@ t_env   *get_env_item_or_none(char *key, t_env *env)
     return (NULL);
 }
 
+void    update_env_item(t_env *item, char *arg)
+{
+    char *value;
+
+    value = extract_env_value(arg);
+    if (value)
+    {
+        free(item->value);
+        item->value = value;
+    }
+}

@@ -31,31 +31,3 @@ int get_output_redirection(t_parse *cmd)
     }
     return (fd);
 }
-
-int get_read_src(t_parse *cmd, t_exec *exe)
-{
-    int fd;
-
-    fd = cmd->read_src;
-    if (fd == NONE && exe->pipes)
-    {
-        if (cmd->id != 0)
-            fd = exe->pipes[cmd->id - 1][READ_END];
-    }
-    return (fd);
-}
-
-int get_write_dst(t_parse *cmd, t_exec *exe)
-{
-    int fd;
-
-    fd = cmd->write_dst;
-    if (fd == NONE && exe->pipes && cmd->next)
-    {
-        if (cmd->id == (exe->ncmds - 1))
-            fd = NONE;
-        else
-            fd = exe->pipes[cmd->id][WRITE_END];
-    }
-    return (fd);
-}
